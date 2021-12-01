@@ -1,4 +1,4 @@
-export type Launch = {
+export type FetchedLaunch = {
   flight_number: number;
   mission_name: string;
   launch_year: number;
@@ -12,6 +12,17 @@ export type Launch = {
     [key: string]: any;
   };
   [key: string]: any;
+};
+
+export type FetchedLaunches = Array<FetchedLaunch>;
+
+export type Launch = {
+  flightNumber: number;
+  missionName: string;
+  launchYear: number;
+  launchSuccess: boolean;
+  rocketName: string;
+  imageUrl: string;
 };
 
 export type Launches = Array<Launch>;
