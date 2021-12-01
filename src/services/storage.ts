@@ -15,7 +15,7 @@ const storageService = {
 
   get: (key: string) => {
     if (isKeyStored(key)) {
-      return JSON.parse(localStorage.getItem(key));
+      return JSON.parse(localStorage.getItem(key) || '{}');
     }
     return null;
   },
