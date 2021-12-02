@@ -1,4 +1,7 @@
 :root {
+  /* Spacing */
+  --spacing-unit: 8px;
+
   /* Colors */
   --color-primary: #000000;
   --color-text: #202020;
