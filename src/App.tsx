@@ -8,11 +8,12 @@ import { fetchLaunches } from './redux/modules/launches';
 import MainContainer from './components/MainContainer/MainContainer';
 import FetchError from './components/FetchError/FetchError';
 import FetchLoading from './components/FetchLoading/FetchLoading';
+import LaunchesList from './components/LaunchesList/LaunchesList';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const launchesState = useSelector((state: RootState) => state.launches);
-  const { fetchStatus } = launchesState;
+  const { fetchStatus, launches } = launchesState;
 
   useEffect(() => {
     dispatch(fetchLaunches());
@@ -33,7 +34,7 @@ const App: React.FC = () => {
       )}
 
       {!fetchStatus.isLoading && !fetchStatus.hasError && (
-        <FadeIn>Hello World!</FadeIn>
+        <LaunchesList launches={launches} />
       )}
     </MainContainer>
   );
