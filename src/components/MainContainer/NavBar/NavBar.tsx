@@ -22,11 +22,9 @@ const NavBar: React.FC = () => {
               title="SpaceX Launches List"
             />
           </IconButton>
-          <S.TypographyContainer>
-            <Typography variant="h1" noWrap>
-              SpaceX Launches List
-            </Typography>
-          </S.TypographyContainer>
+          <Typography variant="h6" component="h1" noWrap>
+            SpaceX Launches List
+          </Typography>
 
           <S.Grow />
 
@@ -53,17 +51,6 @@ const S = {
   StyledAppBar: styled(AppBar)`
     & > div {
       background-color: var(--color-primary);
-    }
-  `,
-
-  TypographyContainer: styled.div`
-    overflow: hidden;
-
-    & > h1 {
-      font-weight: 500;
-      font-size: 1.25rem;
-      line-height: 1.6;
-      letter-spacing: 0.0075em;
     }
   `,
 };
