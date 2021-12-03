@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { toggleFiltersDrawer } from '../../../redux/modules/filtersDrawer';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,32 +8,42 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FilterList from '@material-ui/icons/FilterList';
 
-const NavBar: React.FC = () => (
-  <S.Grow>
-    <S.StyledAppBar>
-      <Toolbar>
-        <IconButton edge="start" aria-label="logo">
-          <img
-            src="/logo32-negative.png"
-            alt="SpaceX Launches List"
-            title="SpaceX Launches List"
-          />
-        </IconButton>
-        <S.TypographyContainer>
-          <Typography variant="h1" noWrap>
-            SpaceX Launches List
-          </Typography>
-        </S.TypographyContainer>
+const NavBar: React.FC = () => {
+  const dispatch = useDispatch();
 
-        <S.Grow />
+  return (
+    <S.Grow>
+      <S.StyledAppBar>
+        <Toolbar>
+          <IconButton edge="start" aria-label="logo">
+            <img
+              src="/logo32-negative.png"
+              alt="SpaceX Launches List"
+              title="SpaceX Launches List"
+            />
+          </IconButton>
+          <S.TypographyContainer>
+            <Typography variant="h1" noWrap>
+              SpaceX Launches List
+            </Typography>
+          </S.TypographyContainer>
 
-        <IconButton aria-label="open filters drawer" color="inherit">
-          <FilterList />
-        </IconButton>
-      </Toolbar>
-    </S.StyledAppBar>
-  </S.Grow>
-);
+          <S.Grow />
+
+          <IconButton
+            aria-label="open filters drawer"
+            color="inherit"
+            onClick={() => {
+              dispatch(toggleFiltersDrawer(true));
+            }}
+          >
+            <FilterList />
+          </IconButton>
+        </Toolbar>
+      </S.StyledAppBar>
+    </S.Grow>
+  );
+};
 
 const S = {
   Grow: styled.div`

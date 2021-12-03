@@ -3,11 +3,18 @@ import thunk from 'redux-thunk';
 import launches from './modules/launches';
 import filtersDrawer from './modules/filtersDrawer';
 
+const rootReducer = combineReducers({
+  launches,
+  filtersDrawer
+});
+
+export type RootState = ReturnType<typeof rootReducer>
+
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  combineReducers({ launches, filtersDrawer }),
+  rootReducer,
   composeEnhancers(applyMiddleware(thunk)),
 );
 

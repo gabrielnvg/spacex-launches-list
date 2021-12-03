@@ -9,6 +9,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import NavBar from './NavBar/NavBar';
 import ScrollTop from './ScrollTop/ScrollTop';
+import FiltersDrawer from './FiltersDrawer/FiltersDrawer';
 
 interface MainContainerProps {
   children: React.ReactNode;
@@ -29,6 +30,8 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => (
         <KeyboardArrowUpIcon />
       </S.StyledFab>
     </ScrollTop>
+
+    <FiltersDrawer />
   </>
 );
 
