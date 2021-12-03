@@ -86,6 +86,7 @@ export const fetchLaunches = () => (dispatch: Function) => {
         launchSuccess: launch.launch_success,
         rocketName: launch.rocket.rocket_name,
         imageUrl: launch.links.mission_patch_small,
+        isFavourite: false,
       }));
 
       dispatch(setPristineLaunches(launches));

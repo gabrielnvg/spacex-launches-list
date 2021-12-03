@@ -23,6 +23,7 @@ export type Launch = {
   launchSuccess: boolean | null;
   rocketName: string | null;
   imageUrl: string | null;
+  isFavourite: boolean;
 };
 
 export type Launches = Array<Launch>;
