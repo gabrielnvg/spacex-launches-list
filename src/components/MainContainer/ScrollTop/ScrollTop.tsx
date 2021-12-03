@@ -35,6 +35,14 @@ const S = {
     position: fixed;
     bottom: calc(var(--spacing-unit) * 2);
     right: calc(var(--spacing-unit) * 2);
+
+    & button {
+      background-color: var(--color-primary);
+
+      &:hover {
+        background-color: var(--color-primary);
+      }
+    }
   `,
 };
 
