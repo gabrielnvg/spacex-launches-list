@@ -4,6 +4,9 @@ import { Launch } from '../../../types/launches';
 
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
+import IconButton from '@material-ui/core/IconButton';
+import StarBorder from '@material-ui/icons/StarBorder';
+import Star from '@material-ui/icons/Star';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -29,6 +32,12 @@ const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => (
           }}
         />
       </div>
+
+      <S.FavouriteButtonContainer>
+        <IconButton aria-label="favourite the launch" color="inherit">
+          <StarBorder />
+        </IconButton>
+      </S.FavouriteButtonContainer>
 
       <S.FlightNumber>
         <Typography>
@@ -92,6 +101,13 @@ const S = {
         height: 100%;
       }
     }
+  `,
+
+  FavouriteButtonContainer: styled.div`
+    position: absolute;
+    top: 0;
+    right: calc(var(--spacing-unit) / 4);
+    color: #ffffff;
   `,
 
   FlightNumber: styled.div`
