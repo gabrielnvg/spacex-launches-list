@@ -1,10 +1,10 @@
 export type FetchedLaunch = {
-  flight_number: number | null;
-  mission_name: string | null;
-  launch_year: number | null;
+  flight_number: number;
+  mission_name: string;
+  launch_year: number;
   launch_success: boolean | null;
   rocket: {
-    rocket_name: string | null;
+    rocket_name: string;
     [key: string]: any;
   };
   links: {
@@ -17,11 +17,11 @@ export type FetchedLaunch = {
 export type FetchedLaunches = Array<FetchedLaunch>;
 
 export type Launch = {
-  flightNumber: number | null;
-  missionName: string | null;
-  launchYear: number | null;
+  flightNumber: number;
+  missionName: string;
+  launchYear: number;
   launchSuccess: boolean | null;
-  rocketName: string | null;
+  rocketName: string;
   imageUrl: string | null;
   isFavourite: boolean;
 };
