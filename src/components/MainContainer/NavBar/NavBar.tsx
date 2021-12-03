@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { muiBreakpoints } from '../../../utils/breakpoints';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,9 +17,11 @@ const NavBar: React.FC = () => (
             title="SpaceX Launches List"
           />
         </IconButton>
-        <S.StyledTypography variant="h6" noWrap>
-          SpaceX Launches List
-        </S.StyledTypography>
+        <S.TypographyContainer>
+          <Typography variant="h1" noWrap>
+            SpaceX Launches List
+          </Typography>
+        </S.TypographyContainer>
 
         <S.Grow />
 
@@ -43,12 +44,14 @@ const S = {
     }
   `,
 
-  StyledTypography: styled(Typography)`
-    display: none;
+  TypographyContainer: styled.div`
+    overflow: hidden;
 
-    @media screen and (min-width: ${`${muiBreakpoints.sm}px`}) {
-      display: block;
-      margin-right: calc(var(--spacing-unit) * 2);
+    & > h1 {
+      font-weight: 500;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      letter-spacing: 0.0075em;
     }
   `,
 };
