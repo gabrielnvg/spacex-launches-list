@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { RootState } from '../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 import { breakpoints } from '../../../utils/breakpoints';
 import { toggleFiltersDrawer } from '../../../redux/modules/filtersDrawer';
 
