@@ -1,5 +1,6 @@
 import storage, { storageKeys } from '../../services/storage';
 import { FetchedLaunch, Launch, Launches } from '../../types/launches';
+import changeIsFavouriteValues from '../../utils/changeIsFavouriteValues';
 import fetchWithTimeout from '../../utils/fetchWithTimeout';
 
 const LAUNCHES_ENDPOINT = 'https://api.spacexdata.com/v3/launches';
@@ -76,22 +77,6 @@ export const setLaunches = (launches: Launches) => ({
 export const getFavouritesFromStorage = () =>
   storage.get(storageKeys.favouriteLaunches);
 
-const changeIsFavouriteValues = (
-  launchesArray: Launches,
-  isFavourite: boolean,
-  missionName: string,
-) =>
-  launchesArray.map((launch: Launch) => {
-    if (launch.missionName === missionName) {
-      return {
-        ...launch,
-        isFavourite,
-      };
-    }
-
-    return launch;
-  });
-
 export const storeFavouriteOnStorage =
   (missionName: string) => (dispatch: Function, getState: Function) => {
     const storageFavourites = getFavouritesFromStorage() || [];
@@ -102,19 +87,19 @@ export const storeFavouriteOnStorage =
       missionName,
     ]);
 
-    const alteredLaunches = changeIsFavouriteValues(
-      launches,
-      true,
+    const alteredLaunches = changeIsFavouriteValues({
+      launchesArray: launches,
+      isFavourite: true,
       missionName,
-    );
+    });
 
     dispatch(setLaunches(alteredLaunches));
 
-    const alteredUnfilteredLaunches = changeIsFavouriteValues(
-      unfilteredLaunches,
-      true,
+    const alteredUnfilteredLaunches = changeIsFavouriteValues({
+      launchesArray: unfilteredLaunches,
+      isFavourite: true,
       missionName,
-    );
+    });
 
     dispatch(setUnfilteredLaunches(alteredUnfilteredLaunches));
   };
@@ -130,19 +115,19 @@ export const removeFavouriteFromStorage =
 
     storage.set(storageKeys.favouriteLaunches, alteredFavourites);
 
-    const alteredLaunches = changeIsFavouriteValues(
-      launches,
-      false,
+    const alteredLaunches = changeIsFavouriteValues({
+      launchesArray: launches,
+      isFavourite: false,
       missionName,
-    );
+    });
 
     dispatch(setLaunches(alteredLaunches));
 
-    const alteredUnfilteredLaunches = changeIsFavouriteValues(
-      unfilteredLaunches,
-      false,
+    const alteredUnfilteredLaunches = changeIsFavouriteValues({
+      launchesArray: unfilteredLaunches,
+      isFavourite: false,
       missionName,
-    );
+    });
 
     dispatch(setUnfilteredLaunches(alteredUnfilteredLaunches));
   };
