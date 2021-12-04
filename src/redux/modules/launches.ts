@@ -1,4 +1,5 @@
-import { FetchedLaunch, Launches } from '../../types/launches';
+import storage, { storageKeys } from '../../services/storage';
+import { FetchedLaunch, Launch, Launches } from '../../types/launches';
 import fetchWithTimeout from '../../utils/fetchWithTimeout';
 
 const LAUNCHES_ENDPOINT = 'https://api.spacexdata.com/v3/launches';
@@ -72,6 +73,58 @@ export const setLaunches = (launches: Launches) => ({
   launches,
 });
 
+export const getFavouritesFromStorage = () =>
+  storage.get(storageKeys.favouriteLaunches);
+
+export const storeFavouriteOnStorage =
+  (missionName: string) => (dispatch: Function, getState: Function) => {
+    const storageFavourites = getFavouritesFromStorage() || [];
+    const { launches } = getState().launches;
+
+    storage.set(storageKeys.favouriteLaunches, [
+      ...storageFavourites,
+      missionName,
+    ]);
+
+    const alteredLaunches = launches.map((launch: Launch) => {
+      if (launch.missionName === missionName) {
+        return {
+          ...launch,
+          isFavourite: true,
+        };
+      }
+
+      return launch;
+    });
+
+    dispatch(setLaunches(alteredLaunches));
+  };
+
+export const removeFavouriteFromStorage =
+  (missionName: string) => (dispatch: Function, getState: Function) => {
+    const storageFavourites = getFavouritesFromStorage() || [];
+    const { launches } = getState().launches;
+
+    const alteredFavourites = storageFavourites.filter(
+      (favourite: string) => !Boolean(favourite === missionName),
+    );
+
+    storage.set(storageKeys.favouriteLaunches, alteredFavourites);
+
+    const alteredLaunches = launches.map((launch: Launch) => {
+      if (launch.missionName === missionName) {
+        return {
+          ...launch,
+          isFavourite: false,
+        };
+      }
+
+      return launch;
+    });
+
+    dispatch(setLaunches(alteredLaunches));
+  };
+
 export const fetchLaunches = () => (dispatch: Function) => {
   fetchWithTimeout({
     url: LAUNCHES_ENDPOINT,
@@ -79,6 +132,8 @@ export const fetchLaunches = () => (dispatch: Function) => {
   })
     .then((response) => response.json())
     .then((fetchedData) => {
+      const storageFavouriteLaunches = getFavouritesFromStorage();
+
       const launches = fetchedData.map((launch: FetchedLaunch) => ({
         flightNumber: launch.flight_number,
         missionName: launch.mission_name,
@@ -86,7 +141,9 @@ export const fetchLaunches = () => (dispatch: Function) => {
         launchSuccess: launch.launch_success,
         rocketName: launch.rocket.rocket_name,
         imageUrl: launch.links.mission_patch_small,
-        isFavourite: false,
+        isFavourite:
+          storageFavouriteLaunches &&
+          storageFavouriteLaunches.includes(launch.mission_name),
       }));
 
       dispatch(setPristineLaunches(launches));

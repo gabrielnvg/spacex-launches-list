@@ -1,6 +1,11 @@
 import { SyntheticEvent } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { Launch } from '../../../types/launches';
+import {
+  storeFavouriteOnStorage,
+  removeFavouriteFromStorage,
+} from '../../../redux/modules/launches';
 
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -17,69 +22,84 @@ interface LaunchCardProps {
   launch: Launch;
 }
 
-const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => (
-  <S.StyledCard>
-    <S.StyledCardMedia>
-      <div>
-        <img
-          src={launch.imageUrl || ''}
-          alt={launch.missionName || ''}
-          title={launch.missionName || ''}
-          onError={(e: SyntheticEvent<HTMLImageElement>) => {
-            const target: any = e.target;
-            target.onError = null;
-            target.src = placeholderImage;
-          }}
-        />
-      </div>
+const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => {
+  const dispatch = useDispatch();
 
-      <S.FavouriteButtonContainer>
-        <IconButton aria-label="favourite the launch" color="inherit">
-          <StarBorder />
-        </IconButton>
-      </S.FavouriteButtonContainer>
+  const handleFavouriteClick = (isFavourite: boolean, missionName: string) =>
+    isFavourite
+      ? dispatch(removeFavouriteFromStorage(missionName))
+      : dispatch(storeFavouriteOnStorage(missionName));
 
-      <S.FlightNumber>
-        <Typography>
-          Nº <b>{launch.flightNumber}</b>
-        </Typography>
-      </S.FlightNumber>
+  return (
+    <S.StyledCard>
+      <S.StyledCardMedia>
+        <div>
+          <img
+            src={launch.imageUrl || ''}
+            alt={launch.missionName || ''}
+            title={launch.missionName || ''}
+            onError={(e: SyntheticEvent<HTMLImageElement>) => {
+              const target: any = e.target;
+              target.onError = null;
+              target.src = placeholderImage;
+            }}
+          />
+        </div>
 
-      <S.LaunchYear>
-        <Typography>
-          <b>{launch.launchYear}</b>
-        </Typography>
-      </S.LaunchYear>
-    </S.StyledCardMedia>
+        <S.FavouriteButtonContainer>
+          <IconButton
+            aria-label="favourite the launch"
+            color="inherit"
+            onClick={() =>
+              handleFavouriteClick(launch.isFavourite, launch.missionName)
+            }
+          >
+            {launch.isFavourite ? <Star /> : <StarBorder />}
+          </IconButton>
+        </S.FavouriteButtonContainer>
 
-    <CardContent>
-      <S.MissionName>
-        <Typography component="h2">
-          Mission: <b>{launch.missionName}</b>
-        </Typography>
-      </S.MissionName>
+        <S.FlightNumber>
+          <Typography>
+            Nº <b>{launch.flightNumber}</b>
+          </Typography>
+        </S.FlightNumber>
 
-      <Divider />
+        <S.LaunchYear>
+          <Typography>
+            <b>{launch.launchYear}</b>
+          </Typography>
+        </S.LaunchYear>
+      </S.StyledCardMedia>
 
-      <S.RocketName>
-        <Typography>
-          Rocket: <b>{launch.rocketName}</b>
-        </Typography>
-      </S.RocketName>
+      <CardContent>
+        <S.MissionName>
+          <Typography component="h2">
+            Mission: <b>{launch.missionName}</b>
+          </Typography>
+        </S.MissionName>
 
-      <S.LaunchSuccess>
-        <Typography>
-          {typeof launch.launchSuccess === 'boolean' &&
-            (launch.launchSuccess ? (
-              <S.SuccessText>Success</S.SuccessText>
-            ) : (
-              <S.FailedText>Failed</S.FailedText>
-            ))}
-        </Typography>
-      </S.LaunchSuccess>
-    </CardContent>
-  </S.StyledCard>
-);
+        <Divider />
+
+        <S.RocketName>
+          <Typography>
+            Rocket: <b>{launch.rocketName}</b>
+          </Typography>
+        </S.RocketName>
+
+        <S.LaunchSuccess>
+          <Typography>
+            {typeof launch.launchSuccess === 'boolean' &&
+              (launch.launchSuccess ? (
+                <S.SuccessText>Success</S.SuccessText>
+              ) : (
+                <S.FailedText>Failed</S.FailedText>
+              ))}
+          </Typography>
+        </S.LaunchSuccess>
+      </CardContent>
+    </S.StyledCard>
+  );
+};
 
 const S = {
   StyledCard: styled(Card)`
