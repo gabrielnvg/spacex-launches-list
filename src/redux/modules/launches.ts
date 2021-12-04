@@ -76,34 +76,53 @@ export const setLaunches = (launches: Launches) => ({
 export const getFavouritesFromStorage = () =>
   storage.get(storageKeys.favouriteLaunches);
 
+const changeIsFavouriteValues = (
+  launchesArray: Launches,
+  isFavourite: boolean,
+  missionName: string,
+) =>
+  launchesArray.map((launch: Launch) => {
+    if (launch.missionName === missionName) {
+      return {
+        ...launch,
+        isFavourite,
+      };
+    }
+
+    return launch;
+  });
+
 export const storeFavouriteOnStorage =
   (missionName: string) => (dispatch: Function, getState: Function) => {
     const storageFavourites = getFavouritesFromStorage() || [];
-    const { launches } = getState().launches;
+    const { unfilteredLaunches, launches } = getState().launches;
 
     storage.set(storageKeys.favouriteLaunches, [
       ...storageFavourites,
       missionName,
     ]);
 
-    const alteredLaunches = launches.map((launch: Launch) => {
-      if (launch.missionName === missionName) {
-        return {
-          ...launch,
-          isFavourite: true,
-        };
-      }
-
-      return launch;
-    });
+    const alteredLaunches = changeIsFavouriteValues(
+      launches,
+      true,
+      missionName,
+    );
 
     dispatch(setLaunches(alteredLaunches));
+
+    const alteredUnfilteredLaunches = changeIsFavouriteValues(
+      unfilteredLaunches,
+      true,
+      missionName,
+    );
+
+    dispatch(setUnfilteredLaunches(alteredUnfilteredLaunches));
   };
 
 export const removeFavouriteFromStorage =
   (missionName: string) => (dispatch: Function, getState: Function) => {
     const storageFavourites = getFavouritesFromStorage() || [];
-    const { launches } = getState().launches;
+    const { unfilteredLaunches, launches } = getState().launches;
 
     const alteredFavourites = storageFavourites.filter(
       (favourite: string) => !Boolean(favourite === missionName),
@@ -111,18 +130,21 @@ export const removeFavouriteFromStorage =
 
     storage.set(storageKeys.favouriteLaunches, alteredFavourites);
 
-    const alteredLaunches = launches.map((launch: Launch) => {
-      if (launch.missionName === missionName) {
-        return {
-          ...launch,
-          isFavourite: false,
-        };
-      }
-
-      return launch;
-    });
+    const alteredLaunches = changeIsFavouriteValues(
+      launches,
+      false,
+      missionName,
+    );
 
     dispatch(setLaunches(alteredLaunches));
+
+    const alteredUnfilteredLaunches = changeIsFavouriteValues(
+      unfilteredLaunches,
+      false,
+      missionName,
+    );
+
+    dispatch(setUnfilteredLaunches(alteredUnfilteredLaunches));
   };
 
 export const fetchLaunches = () => (dispatch: Function) => {
