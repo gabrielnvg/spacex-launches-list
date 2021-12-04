@@ -7,7 +7,7 @@ const LAUNCHES_ENDPOINT = 'https://api.spacexdata.com/v3/launches';
 const types = {
   SET_FETCH_LOADING: 'launches/SET_FETCH_LOADING',
   SET_FETCH_ERROR: 'launches/SET_FETCH_ERROR',
-  SET_PRISTINE_LAUNCHES: 'launches/SET_PRISTINE_LAUNCHES',
+  SET_UNFILTERED_LAUNCHES: 'launches/SET_UNFILTERED_LAUNCHES',
   SET_LAUNCHES: 'launches/SET_LAUNCHES',
 };
 
@@ -16,7 +16,7 @@ const initialState = {
     isLoading: true,
     hasError: false,
   },
-  pristineLaunches: [],
+  unfilteredLaunches: [],
   launches: [],
 };
 
@@ -38,10 +38,10 @@ const reducer = (state = initialState, action: { [key: string]: any }) => {
           hasError: action.hasError,
         },
       };
-    case types.SET_PRISTINE_LAUNCHES:
+    case types.SET_UNFILTERED_LAUNCHES:
       return {
         ...state,
-        pristineLaunches: action.pristineLaunches,
+        unfilteredLaunches: action.unfilteredLaunches,
       };
     case types.SET_LAUNCHES:
       return {
@@ -63,9 +63,9 @@ export const setFetchError = (hasError: boolean) => ({
   hasError,
 });
 
-export const setPristineLaunches = (pristineLaunches: Launches) => ({
-  type: types.SET_PRISTINE_LAUNCHES,
-  pristineLaunches,
+export const setUnfilteredLaunches = (unfilteredLaunches: Launches) => ({
+  type: types.SET_UNFILTERED_LAUNCHES,
+  unfilteredLaunches,
 });
 
 export const setLaunches = (launches: Launches) => ({
@@ -146,7 +146,7 @@ export const fetchLaunches = () => (dispatch: Function) => {
           storageFavouriteLaunches.includes(launch.mission_name),
       }));
 
-      dispatch(setPristineLaunches(launches));
+      dispatch(setUnfilteredLaunches(launches));
       dispatch(setLaunches(launches));
       dispatch(setFetchLoading(false));
     })
