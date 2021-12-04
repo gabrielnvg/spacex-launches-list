@@ -90,9 +90,9 @@ const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => {
           <Typography>
             {typeof launch.launchSuccess === 'boolean' &&
               (launch.launchSuccess ? (
-                <S.SuccessText>Success</S.SuccessText>
+                <S.SucceededText>Succeeded</S.SucceededText>
               ) : (
-                <S.FailedText>Failed</S.FailedText>
+                <S.UnsucceededText>Unsucceeded</S.UnsucceededText>
               ))}
           </Typography>
         </S.LaunchSuccess>
@@ -171,14 +171,14 @@ const S = {
     justify-content: flex-end;
   `,
 
-  SuccessText: styled.span`
+  SucceededText: styled.span`
     padding: calc(var(--spacing-unit) / 4) var(--spacing-unit);
     color: #ffffff;
     background-color: #00c853;
     border-radius: 25px;
   `,
 
-  FailedText: styled.span`
+  UnsucceededText: styled.span`
     padding: 2px 8px;
     color: #ffffff;
     background-color: #f44336;
