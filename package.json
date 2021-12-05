@@ -34,6 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "npm run build && surge ./build https://gabrielnvg-spacex-launches-list.surge.sh",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
