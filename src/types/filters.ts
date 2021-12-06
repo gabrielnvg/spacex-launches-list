@@ -1,9 +1,10 @@
 export enum FiltersKeys {
-  DateFrom = "dateFrom",
-  DateTo = "dateTo",
+  DateFrom = 'dateFrom',
+  DateTo = 'dateTo',
   Success = 'success',
   PastUpcoming = 'pastUpcoming',
   OnlyFavourites = 'onlyFavourites',
+  Reset = 'reset',
 }
 
 export enum Success {
@@ -19,8 +20,8 @@ export enum PastUpcoming {
 }
 
 export interface Filters {
-  dateFrom: Date | null,
-  dateTo: Date | null,
+  dateFrom: Date | null;
+  dateTo: Date | null;
   success: Success;
   pastUpcoming: PastUpcoming;
   onlyFavourites: boolean;
