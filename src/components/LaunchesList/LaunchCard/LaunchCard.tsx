@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { SyntheticEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Launch } from '../../../types/launches';
+import { Success, PastUpcoming } from '../../../types/filters';
 import {
   storeFavouriteOnStorage,
   removeFavouriteFromStorage,
@@ -90,16 +91,27 @@ const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => {
           <Typography>
             {typeof launch.launchSuccess === 'boolean' &&
               (launch.launchSuccess ? (
-                <S.SucceededText>Succeeded</S.SucceededText>
+                <S.SucceededText>{Success.Succeeded}</S.SucceededText>
               ) : (
-                <S.UnsucceededText>Unsucceeded</S.UnsucceededText>
+                <S.UnsucceededText>{Success.Unsucceeded}</S.UnsucceededText>
               ))}
+
+            {launch.upcoming && (
+              <S.UpcomingText>{PastUpcoming.Upcoming}</S.UpcomingText>
+            )}
           </Typography>
         </S.LaunchSuccess>
       </CardContent>
     </S.StyledCard>
   );
 };
+
+const LabelText = styled.div`
+  padding: calc(var(--spacing-unit) / 4) var(--spacing-unit);
+  color: #ffffff;
+  background-color: var(--color-primary);
+  border-radius: 25px;
+`;
 
 const S = {
   StyledCard: styled(Card)`
@@ -171,18 +183,16 @@ const S = {
     justify-content: flex-end;
   `,
 
-  SucceededText: styled.span`
-    padding: calc(var(--spacing-unit) / 4) var(--spacing-unit);
-    color: #ffffff;
+  SucceededText: styled(LabelText)`
     background-color: #00c853;
-    border-radius: 25px;
   `,
 
-  UnsucceededText: styled.span`
-    padding: 2px 8px;
-    color: #ffffff;
+  UnsucceededText: styled(LabelText)`
     background-color: #f44336;
-    border-radius: 25px;
+  `,
+
+  UpcomingText: styled(LabelText)`
+    background-color: #1976d2;
   `,
 };
 
