@@ -218,22 +218,24 @@ const Filters: React.FC = () => {
 
       <Divider />
 
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <S.StyledCheckbox
-              checked={filters.onlyFavourites}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleFilterChange({
-                  filter: FiltersKeys.OnlyFavourites,
-                  targetValue: e.target.checked,
-                })
-              }
-            />
-          }
-          label="Show only favourites"
-        />
-      </FormGroup>
+      <S.CheckboxContainer>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <S.StyledCheckbox
+                checked={filters.onlyFavourites}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleFilterChange({
+                    filter: FiltersKeys.OnlyFavourites,
+                    targetValue: e.target.checked,
+                  })
+                }
+              />
+            }
+            label="Show only favourites"
+          />
+        </FormGroup>
+      </S.CheckboxContainer>
     </S.FiltersContainer>
   );
 };
@@ -249,6 +251,10 @@ const S = {
 
   FiltersContainer: styled.div`
     padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+  `,
+
+  CheckboxContainer: styled.div`
+    margin-top: var(--spacing-unit);
   `,
 
   StyledCheckbox: styled(Checkbox)`
