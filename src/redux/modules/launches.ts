@@ -145,6 +145,7 @@ export const fetchLaunches = () => (dispatch: Function) => {
         flightNumber: launch.flight_number,
         missionName: launch.mission_name,
         launchYear: launch.launch_year,
+        launchDateUtc: launch.launch_date_utc,
         launchSuccess: launch.launch_success,
         rocketName: launch.rocket.rocket_name,
         imageUrl: launch.links.mission_patch_small,

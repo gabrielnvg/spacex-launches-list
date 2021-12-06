@@ -2,6 +2,7 @@ export type FetchedLaunch = {
   flight_number: number;
   mission_name: string;
   launch_year: number;
+  launch_date_utc: string;
   launch_success: boolean | null;
   rocket: {
     rocket_name: string;
@@ -20,6 +21,7 @@ export type Launch = {
   flightNumber: number;
   missionName: string;
   launchYear: number;
+  launchDateUtc: string;
   launchSuccess: boolean | null;
   rocketName: string;
   imageUrl: string | null;
