@@ -56,7 +56,6 @@ const S = {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 
     @media screen and (min-width: ${`${breakpoints.xxs}px`}) {
       width: 375px;
