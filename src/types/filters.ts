@@ -19,10 +19,8 @@ export enum PastUpcoming {
 }
 
 export interface Filters {
-  date: {
-    from: string;
-    to: string;
-  };
+  dateFrom: Date | null,
+  dateTo: Date | null,
   success: Success;
   pastUpcoming: PastUpcoming;
   onlyFavourites: boolean;
