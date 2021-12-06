@@ -40,9 +40,7 @@ const FiltersDrawer: React.FC = () => {
         <Divider />
 
         <S.DrawerMainContent>
-
-<Filters />
-
+          <Filters />
         </S.DrawerMainContent>
       </S.DrawerContainer>
     </Drawer>
@@ -56,6 +54,7 @@ const S = {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     @media screen and (min-width: ${`${breakpoints.xxs}px`}) {
       width: 375px;
@@ -88,7 +87,7 @@ const S = {
   `,
 
   DrawerMainContent: styled.div`
-    overflow: 'auto';
+    overflow: auto;
   `,
 };
 
