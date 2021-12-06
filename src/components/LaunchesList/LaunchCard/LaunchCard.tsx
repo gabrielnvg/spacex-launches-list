@@ -106,7 +106,7 @@ const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => {
   );
 };
 
-const LabelText = styled.div`
+const LabelText = styled.span`
   padding: calc(var(--spacing-unit) / 4) var(--spacing-unit);
   color: #ffffff;
   background-color: var(--color-primary);
