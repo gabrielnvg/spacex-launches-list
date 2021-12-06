@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { FiltersKeys, Success } from '../../../../types/filters';
+import { FiltersKeys, Success, PastUpcoming } from '../../../../types/filters';
 import { Launch } from '../../../../types/launches';
 import { setFilters } from '../../../../redux/modules/filtersDrawer';
 import { setLaunches } from '../../../../redux/modules/launches';
@@ -23,6 +23,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 const isSuccess = (text: Success.Succeeded | Success.Unsucceeded) =>
   text === Success.Succeeded;
 
+const isUpcoming = (text: PastUpcoming.Upcoming | PastUpcoming.Past) =>
+  text === PastUpcoming.Upcoming;
+
 const Filters: React.FC = () => {
   const dispatch = useDispatch();
   const states = useSelector((state: RootState) => state);
@@ -40,6 +43,9 @@ const Filters: React.FC = () => {
   );
   const [successValue, setSuccessValue] = useState<string>(
     filters.success || Success.All,
+  );
+  const [pastUpcomingValue, setPastUpcomingValue] = useState<string>(
+    filters.pastUpcoming || PastUpcoming.All,
   );
 
   interface HandleFilterChangeParams {
@@ -73,6 +79,16 @@ const Filters: React.FC = () => {
     }
 
     if (
+      filter === FiltersKeys.PastUpcoming &&
+      typeof targetValue === 'string'
+    ) {
+      localFilters = {
+        ...localFilters,
+        pastUpcoming: targetValue,
+      };
+    }
+
+    if (
       filter === FiltersKeys.OnlyFavourites &&
       typeof targetValue === 'boolean'
     ) {
@@ -96,7 +112,10 @@ const Filters: React.FC = () => {
           ? true
           : launch.launchSuccess === isSuccess(localFilters.success);
 
-      const filterPastUpcoming = true;
+      const filterPastUpcoming =
+        localFilters.pastUpcoming === PastUpcoming.All
+          ? true
+          : launch.upcoming === isUpcoming(localFilters.pastUpcoming);
 
       const filterOnlyFavourites = localFilters.onlyFavourites
         ? launch.isFavourite === true
@@ -178,7 +197,30 @@ const Filters: React.FC = () => {
 
       <Divider />
 
-      <div>past/upcoming filter here. </div>
+      <S.SelectContainer>
+        <FormControl sx={{ minWidth: 195 }}>
+          <InputLabel id="past-upcoming-select-label">Past/Upcoming</InputLabel>
+          <Select
+            labelId="past-upcoming-select-label"
+            id="past-upcoming-select"
+            value={pastUpcomingValue}
+            label="Past/Upcoming"
+            onChange={(e: SelectChangeEvent<string>) => {
+              setPastUpcomingValue(e.target.value);
+              handleFilterChange({
+                filter: FiltersKeys.PastUpcoming,
+                targetValue: e.target.value,
+              });
+            }}
+          >
+            <MenuItem value={PastUpcoming.All}>{PastUpcoming.All}</MenuItem>
+            <MenuItem value={PastUpcoming.Past}>{PastUpcoming.Past}</MenuItem>
+            <MenuItem value={PastUpcoming.Upcoming}>
+              {PastUpcoming.Upcoming}
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </S.SelectContainer>
 
       <Divider />
 
