@@ -8,10 +8,8 @@ const types = {
 const initialState = {
   isDrawerOpen: false,
   filters: {
-    date: {
-      from: '',
-      to: '',
-    },
+    dateFrom: null,
+    dateTo: null,
     success: Success.All,
     pastUpcoming: PastUpcoming.All,
     onlyFavourites: false,
