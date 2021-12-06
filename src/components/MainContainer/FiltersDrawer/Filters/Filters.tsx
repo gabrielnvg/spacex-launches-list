@@ -71,27 +71,21 @@ const Filters: React.FC = () => {
       };
     }
 
-    if (filter === FiltersKeys.Success && typeof targetValue === 'string') {
+    if (filter === FiltersKeys.Success) {
       localFilters = {
         ...localFilters,
         success: targetValue,
       };
     }
 
-    if (
-      filter === FiltersKeys.PastUpcoming &&
-      typeof targetValue === 'string'
-    ) {
+    if (filter === FiltersKeys.PastUpcoming) {
       localFilters = {
         ...localFilters,
         pastUpcoming: targetValue,
       };
     }
 
-    if (
-      filter === FiltersKeys.OnlyFavourites &&
-      typeof targetValue === 'boolean'
-    ) {
+    if (filter === FiltersKeys.OnlyFavourites) {
       localFilters = {
         ...localFilters,
         onlyFavourites: targetValue,
