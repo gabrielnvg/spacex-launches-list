@@ -185,6 +185,7 @@ export const fetchLaunches = () => (dispatch: Function) => {
           launchYear: launch.launch_year,
           launchDateUtc: launch.launch_date_utc,
           launchSuccess: launch.launch_success,
+          upcoming: launch.upcoming,
           rocketName: launch.rocket.rocket_name,
           imageUrl: launch.links.mission_patch_small,
           isFavourite:

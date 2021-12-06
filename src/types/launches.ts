@@ -23,6 +23,7 @@ export type Launch = {
   launchYear: number;
   launchDateUtc: string;
   launchSuccess: boolean | null;
+  upcoming: boolean;
   rocketName: string;
   imageUrl: string | null;
   isFavourite: boolean;
