@@ -10,6 +10,8 @@ const types = {
   SET_FETCH_ERROR: 'launches/SET_FETCH_ERROR',
   SET_UNFILTERED_LAUNCHES: 'launches/SET_UNFILTERED_LAUNCHES',
   SET_LAUNCHES: 'launches/SET_LAUNCHES',
+  SET_FIRST_LAUNCH_DATE: 'launches/SET_FIRST_LAUNCH_DATE',
+  SET_LAST_LAUNCH_DATE: 'launches/SET_LAST_LAUNCH_DATE',
 };
 
 const initialState = {
@@ -19,6 +21,8 @@ const initialState = {
   },
   unfilteredLaunches: [],
   launches: [],
+  firstLaunchDate: '',
+  lastLaunchDate: '',
 };
 
 const reducer = (state = initialState, action: { [key: string]: any }) => {
@@ -49,6 +53,16 @@ const reducer = (state = initialState, action: { [key: string]: any }) => {
         ...state,
         launches: action.launches,
       };
+    case types.SET_FIRST_LAUNCH_DATE:
+      return {
+        ...state,
+        firstLaunchDate: action.firstLaunchDate,
+      };
+    case types.SET_LAST_LAUNCH_DATE:
+      return {
+        ...state,
+        lastLaunchDate: action.lastLaunchDate,
+      };
     default:
       return state;
   }
@@ -72,6 +86,16 @@ export const setUnfilteredLaunches = (unfilteredLaunches: Launches) => ({
 export const setLaunches = (launches: Launches) => ({
   type: types.SET_LAUNCHES,
   launches,
+});
+
+export const setFirstLaunchDate = (firstLaunchDate: Date) => ({
+  type: types.SET_FIRST_LAUNCH_DATE,
+  firstLaunchDate,
+});
+
+export const setLastLaunchDate = (lastLaunchDate: Date) => ({
+  type: types.SET_LAST_LAUNCH_DATE,
+  lastLaunchDate,
 });
 
 export const getFavouritesFromStorage = () =>
@@ -141,21 +165,38 @@ export const fetchLaunches = () => (dispatch: Function) => {
     .then((fetchedData) => {
       const storageFavouriteLaunches = getFavouritesFromStorage();
 
-      const launches = fetchedData.map((launch: FetchedLaunch) => ({
-        flightNumber: launch.flight_number,
-        missionName: launch.mission_name,
-        launchYear: launch.launch_year,
-        launchDateUtc: launch.launch_date_utc,
-        launchSuccess: launch.launch_success,
-        rocketName: launch.rocket.rocket_name,
-        imageUrl: launch.links.mission_patch_small,
-        isFavourite:
-          storageFavouriteLaunches &&
-          storageFavouriteLaunches.includes(launch.mission_name),
-      }));
+      let firstLaunchDate = fetchedData[0].launch_date_utc;
+      let lastLaunchDate = fetchedData[0].launch_date_utc;
+
+      const launches = fetchedData.map((launch: FetchedLaunch) => {
+        firstLaunchDate =
+          launch.launch_date_utc < firstLaunchDate
+            ? launch.launch_date_utc
+            : firstLaunchDate;
+
+        lastLaunchDate =
+          launch.launch_date_utc > lastLaunchDate
+            ? launch.launch_date_utc
+            : lastLaunchDate;
+
+        return {
+          flightNumber: launch.flight_number,
+          missionName: launch.mission_name,
+          launchYear: launch.launch_year,
+          launchDateUtc: launch.launch_date_utc,
+          launchSuccess: launch.launch_success,
+          rocketName: launch.rocket.rocket_name,
+          imageUrl: launch.links.mission_patch_small,
+          isFavourite:
+            storageFavouriteLaunches &&
+            storageFavouriteLaunches.includes(launch.mission_name),
+        };
+      });
 
       dispatch(setUnfilteredLaunches(launches));
       dispatch(setLaunches(launches));
+      dispatch(setFirstLaunchDate(firstLaunchDate));
+      dispatch(setLastLaunchDate(lastLaunchDate));
       dispatch(setFetchLoading(false));
     })
     .catch(() => {
