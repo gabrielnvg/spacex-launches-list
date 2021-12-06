@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
 import { FiltersKeys, Success, PastUpcoming } from '../../../../types/filters';
 import { Launch } from '../../../../types/launches';
-import { setFilters } from '../../../../redux/modules/filtersDrawer';
+import {
+  setFilters,
+  handleResetFilters,
+} from '../../../../redux/modules/filtersDrawer';
 import { setLaunches } from '../../../../redux/modules/launches';
 
 import TextField from '@mui/material/TextField';
@@ -19,6 +22,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@mui/material/Button';
 
 const isSuccess = (text: Success.Succeeded | Success.Unsucceeded) =>
   text === Success.Succeeded;
@@ -124,6 +128,25 @@ const Filters: React.FC = () => {
     });
 
     dispatch(setLaunches(filteredLaunches));
+  };
+
+  const handleResetButtonClick = () => {
+    localFilters = {
+      dateFrom: new Date(firstLaunchDate),
+      dateTo: new Date(lastLaunchDate),
+      success: Success.All,
+      pastUpcoming: PastUpcoming.All,
+      onlyFavourites: false,
+    };
+
+    setDateFromValue(localFilters.dateFrom);
+    setDateToValue(localFilters.dateTo);
+    setSuccessValue(localFilters.success);
+    setPastUpcomingValue(localFilters.pastUpcoming);
+
+    handleFilterChange({ filter: FiltersKeys.Reset });
+
+    dispatch(handleResetFilters());
   };
 
   return (
@@ -236,6 +259,14 @@ const Filters: React.FC = () => {
           />
         </FormGroup>
       </S.CheckboxContainer>
+
+      <Divider />
+
+      <S.ButtonContainer>
+        <Button variant="contained" onClick={handleResetButtonClick}>
+          Reset filters
+        </Button>
+      </S.ButtonContainer>
     </S.FiltersContainer>
   );
 };
@@ -260,6 +291,17 @@ const S = {
   StyledCheckbox: styled(Checkbox)`
     &.css-ncoufy-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
       color: var(--color-primary);
+    }
+  `,
+
+  ButtonContainer: styled.div`
+    & > button {
+      margin: calc(var(--spacing-unit) * 4) 0;
+      background-color: var(--color-primary);
+
+      &:hover {
+        background-color: var(--color-primary);
+      }
     }
   `,
 };
