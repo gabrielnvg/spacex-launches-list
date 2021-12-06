@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { FiltersKeys } from '../../../../types/filters';
+import { FiltersKeys, Success } from '../../../../types/filters';
 import { Launch } from '../../../../types/launches';
 import { setFilters } from '../../../../redux/modules/filtersDrawer';
 import { setLaunches } from '../../../../redux/modules/launches';
@@ -12,9 +12,16 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import Divider from '@material-ui/core/Divider';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+
+const isSuccess = (text: Success.Succeeded | Success.Unsucceeded) =>
+  text === Success.Succeeded;
 
 const Filters: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,13 +38,19 @@ const Filters: React.FC = () => {
   const [dateToValue, setDateToValue] = useState<Date | null>(
     filters.dateTo || new Date(lastLaunchDate),
   );
+  const [successValue, setSuccessValue] = useState<string>(
+    filters.success || Success.All,
+  );
 
   interface HandleFilterChangeParams {
     filter: string;
-    e?: React.ChangeEvent<HTMLInputElement>;
+    targetValue?: boolean | string;
   }
 
-  const handleFilterChange = ({ filter, e }: HandleFilterChangeParams) => {
+  const handleFilterChange = ({
+    filter,
+    targetValue,
+  }: HandleFilterChangeParams) => {
     if (dateFromValue) {
       localFilters = {
         ...localFilters,
@@ -52,12 +65,20 @@ const Filters: React.FC = () => {
       };
     }
 
-    if (e && filter === FiltersKeys.OnlyFavourites) {
-      const isChecked = e.target.checked;
-
+    if (filter === FiltersKeys.Success && typeof targetValue === 'string') {
       localFilters = {
         ...localFilters,
-        onlyFavourites: isChecked,
+        success: targetValue,
+      };
+    }
+
+    if (
+      filter === FiltersKeys.OnlyFavourites &&
+      typeof targetValue === 'boolean'
+    ) {
+      localFilters = {
+        ...localFilters,
+        onlyFavourites: targetValue,
       };
     }
 
@@ -70,7 +91,10 @@ const Filters: React.FC = () => {
             new Date(launch.launchDateUtc) <= dateToValue
           : true;
 
-      const filterSuccess = true;
+      const filterSuccess =
+        localFilters.success === Success.All
+          ? true
+          : launch.launchSuccess === isSuccess(localFilters.success);
 
       const filterPastUpcoming = true;
 
@@ -127,7 +151,30 @@ const Filters: React.FC = () => {
 
       <Divider />
 
-      <div>succeeded/unsucceeded filter here.</div>
+      <S.SelectContainer>
+        <FormControl sx={{ minWidth: 195 }}>
+          <InputLabel id="success-select-label">Success</InputLabel>
+          <Select
+            labelId="success-select-label"
+            id="success-select"
+            value={successValue}
+            label="Success"
+            onChange={(e: SelectChangeEvent<string>) => {
+              setSuccessValue(e.target.value);
+              handleFilterChange({
+                filter: FiltersKeys.Success,
+                targetValue: e.target.value,
+              });
+            }}
+          >
+            <MenuItem value={Success.All}>{Success.All}</MenuItem>
+            <MenuItem value={Success.Succeeded}>{Success.Succeeded}</MenuItem>
+            <MenuItem value={Success.Unsucceeded}>
+              {Success.Unsucceeded}
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </S.SelectContainer>
 
       <Divider />
 
@@ -140,8 +187,11 @@ const Filters: React.FC = () => {
           control={
             <S.StyledCheckbox
               checked={filters.onlyFavourites}
-              onChange={(e) =>
-                handleFilterChange({ filter: FiltersKeys.OnlyFavourites, e })
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleFilterChange({
+                  filter: FiltersKeys.OnlyFavourites,
+                  targetValue: e.target.checked,
+                })
               }
             />
           }
@@ -155,6 +205,10 @@ const Filters: React.FC = () => {
 const S = {
   DatePickerContainer: styled.div`
     margin-bottom: calc(var(--spacing-unit) * 3);
+  `,
+
+  SelectContainer: styled.div`
+    margin: calc(var(--spacing-unit) * 3) 0;
   `,
 
   FiltersContainer: styled.div`
