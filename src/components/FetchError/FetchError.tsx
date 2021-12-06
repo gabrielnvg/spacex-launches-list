@@ -14,7 +14,7 @@ const FetchError: React.FC = () => (
 
 const S = {
   FetchError: styled.div`
-    margin-top: 25px;
+    margin-top: calc(var(--spacing-unit) * 3);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@ const S = {
 
   TextRow: styled.div`
     &:not(:first-of-type) {
-      margin-top: 10px;
+      margin-top: var(--spacing-unit);
     }
   `,
 };

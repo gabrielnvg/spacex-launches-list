@@ -12,7 +12,7 @@ const FetchLoading: React.FC = () => (
 
 const S = {
   FetchLoading: styled.div`
-    margin-top: 25px;
+    margin-top: calc(var(--spacing-unit) * 3);
     display: flex;
     flex-direction: column;
     align-items: center;

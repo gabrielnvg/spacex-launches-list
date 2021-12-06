@@ -8,7 +8,7 @@ const EmptyList: React.FC = () => (
 
 const S = {
   EmptyList: styled.div`
-    margin-top: 25px;
+    margin-top: calc(var(--spacing-unit) * 3);
   `,
 };
 
