@@ -1,5 +1,6 @@
 export enum FiltersKeys {
-  Date = 'date',
+  DateFrom = "dateFrom",
+  DateTo = "dateTo",
   Success = 'success',
   PastUpcoming = 'pastUpcoming',
   OnlyFavourites = 'onlyFavourites',
