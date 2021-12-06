@@ -9,6 +9,7 @@ import MainContainer from './components/MainContainer/MainContainer';
 import FetchError from './components/FetchError/FetchError';
 import FetchLoading from './components/FetchLoading/FetchLoading';
 import LaunchesList from './components/LaunchesList/LaunchesList';
+import EmptyList from './components/EmptyList/EmptyList';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,9 +34,15 @@ const App: React.FC = () => {
         </FadeIn>
       )}
 
-      {!fetchStatus.isLoading && !fetchStatus.hasError && (
-        <LaunchesList launches={launches} />
-      )}
+      {!fetchStatus.isLoading &&
+        !fetchStatus.hasError &&
+        (launches.length ? (
+          <LaunchesList launches={launches} />
+        ) : (
+          <FadeIn>
+            <EmptyList />
+          </FadeIn>
+        ))}
     </MainContainer>
   );
 };
