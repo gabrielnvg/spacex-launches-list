@@ -254,7 +254,7 @@ const S = {
   `,
 
   CheckboxContainer: styled.div`
-    margin-top: var(--spacing-unit);
+    margin: calc(var(--spacing-unit) * 2) 0;
   `,
 
   StyledCheckbox: styled(Checkbox)`
