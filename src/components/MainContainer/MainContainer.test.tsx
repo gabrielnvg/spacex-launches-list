@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import MainContainer from './MainContainer';
 
 describe('MainContainer component', () => {
-  it('renders without crashing', () => {
+  it('should render without any error', () => {
     const wrapper = shallow(
       <MainContainer>
         <div>Hello World!</div>

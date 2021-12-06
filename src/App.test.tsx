@@ -4,11 +4,13 @@ import store from './redux/store';
 
 import App from './App';
 
-test('should render without any error', () => {
-  const wrapper = shallow(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-  );
-  expect(wrapper.isEmptyRender()).toBe(false);
+describe('App component', () => {
+  it('should render without any error', () => {
+    const wrapper = shallow(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+    );
+    expect(wrapper.isEmptyRender()).toBe(false);
+  });
 });

@@ -5,11 +5,13 @@ import launch from '../../../../__mocks__/launch';
 
 import LaunchCard from './LaunchCard';
 
-test('should render without any error', () => {
-  const wrapper = shallow(
-    <Provider store={store}>
-      <LaunchCard launch={launch} />
-    </Provider>,
-  );
-  expect(wrapper.isEmptyRender()).toBe(false);
+describe('LaunchCard component', () => {
+  it('should render without any error', () => {
+    const wrapper = shallow(
+      <Provider store={store}>
+        <LaunchCard launch={launch} />
+      </Provider>,
+    );
+    expect(wrapper.isEmptyRender()).toBe(false);
+  });
 });

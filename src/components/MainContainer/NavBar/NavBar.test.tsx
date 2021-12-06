@@ -4,11 +4,13 @@ import store from '../../../redux/store';
 
 import NavBar from './NavBar';
 
-test('should render without any error', () => {
-  const wrapper = shallow(
-    <Provider store={store}>
-      <NavBar />
-    </Provider>,
-  );
-  expect(wrapper.isEmptyRender()).toBe(false);
+describe('NavBar component', () => {
+  it('should render without any error', () => {
+    const wrapper = shallow(
+      <Provider store={store}>
+        <NavBar />
+      </Provider>,
+    );
+    expect(wrapper.isEmptyRender()).toBe(false);
+  });
 });

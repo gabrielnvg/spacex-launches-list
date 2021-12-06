@@ -4,11 +4,13 @@ import store from '../../../../redux/store';
 
 import Filters from './Filters';
 
-test('should render without any error', () => {
-  const wrapper = shallow(
-    <Provider store={store}>
-      <Filters />
-    </Provider>,
-  );
-  expect(wrapper.isEmptyRender()).toBe(false);
+describe('Filters component', () => {
+  it('should render without any error', () => {
+    const wrapper = shallow(
+      <Provider store={store}>
+        <Filters />
+      </Provider>,
+    );
+    expect(wrapper.isEmptyRender()).toBe(false);
+  });
 });
