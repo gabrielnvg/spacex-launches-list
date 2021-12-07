@@ -26,10 +26,13 @@ interface LaunchCardProps {
 const LaunchCard: React.FC<LaunchCardProps> = ({ launch }) => {
   const dispatch = useDispatch();
 
-  const handleFavouriteClick = (isFavourite: boolean, missionName: string) =>
+  const handleFavouriteClick = (isFavourite: boolean, missionName: string) => {
+    window.scrollTo(0, 0);
+
     isFavourite
       ? dispatch(removeFavouriteFromStorage(missionName))
       : dispatch(storeFavouriteOnStorage(missionName));
+  };
 
   return (
     <S.StyledCard>
