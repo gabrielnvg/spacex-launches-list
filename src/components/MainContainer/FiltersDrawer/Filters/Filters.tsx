@@ -127,6 +127,8 @@ const Filters: React.FC = () => {
       );
     });
 
+    window.scrollTo(0, 0);
+
     dispatch(setLaunches(filteredLaunches));
   };
 
